@@ -1,0 +1,242 @@
+/* =========================
+   NOBELA WEBSITE JAVASCRIPT
+========================= */
+
+
+// Cart
+let cartCount = 0;
+
+
+// =========================
+// MOBILE MENU
+// =========================
+
+function toggleMenu() {
+
+    const navbar = document.getElementById("navbar");
+
+    navbar.classList.toggle("show");
+
+}
+
+
+// Close mobile menu when clicking a link
+
+document.querySelectorAll(".nav-link").forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        document.getElementById("navbar").classList.remove("show");
+
+    });
+
+});
+
+
+// =========================
+// SCROLL TO PRODUCTS
+// =========================
+
+function scrollToProducts() {
+
+    const products = document.getElementById("products");
+
+    products.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+// =========================
+// ADD TO CART
+// =========================
+
+function addToCart(productName) {
+
+    cartCount++;
+
+    document.getElementById("cartCount").textContent = cartCount;
+
+    showNotification(productName + " added to cart");
+
+}
+
+
+// =========================
+// CART
+// =========================
+
+function openCart() {
+
+    if (cartCount === 0) {
+
+        showNotification("Your cart is empty");
+
+    } else {
+
+        showNotification(
+            cartCount + " item(s) in your cart"
+        );
+
+    }
+
+}
+
+
+// =========================
+// NOTIFICATION
+// =========================
+
+function showNotification(message) {
+
+    const notification =
+        document.getElementById("cartNotification");
+
+    const notificationText =
+        document.getElementById("notificationText");
+
+    notificationText.textContent = message;
+
+    notification.classList.add("show");
+
+    setTimeout(() => {
+
+        notification.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+// =========================
+// HERO SLIDER
+// =========================
+
+let currentSlide = 1;
+
+const slideNumber =
+    document.getElementById("slideNumber");
+
+
+function updateSlideNumber() {
+
+    slideNumber.textContent =
+        String(currentSlide).padStart(2, "0");
+
+}
+
+
+function nextSlide() {
+
+    currentSlide++;
+
+    if (currentSlide > 3) {
+        currentSlide = 1;
+    }
+
+    updateSlideNumber();
+
+}
+
+
+function previousSlide() {
+
+    currentSlide--;
+
+    if (currentSlide < 1) {
+        currentSlide = 3;
+    }
+
+    updateSlideNumber();
+
+}
+
+
+// =========================
+// WISHLIST
+// =========================
+
+document.querySelectorAll(".wishlist").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const icon = this.querySelector("i");
+
+        if (icon.classList.contains("fa-regular")) {
+
+            icon.classList.remove("fa-regular");
+
+            icon.classList.add("fa-solid");
+
+            this.style.color = "#3479bd";
+
+        } else {
+
+            icon.classList.remove("fa-solid");
+
+            icon.classList.add("fa-regular");
+
+            this.style.color = "";
+
+        }
+
+    });
+
+});
+
+
+// =========================
+// NAV ACTIVE ITEM
+// =========================
+
+const navLinks =
+    document.querySelectorAll(".nav-link");
+
+navLinks.forEach(link => {
+
+    link.addEventListener("click", function () {
+
+        navLinks.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+    });
+
+});
+
+
+// =========================
+// HEADER SCROLL EFFECT
+// =========================
+
+window.addEventListener("scroll", () => {
+
+    const header =
+        document.querySelector(".header");
+
+    if (window.scrollY > 80) {
+
+        header.style.boxShadow =
+            "0 8px 30px rgba(0,0,0,0.08)";
+
+    } else {
+
+        header.style.boxShadow = "none";
+
+    }
+
+});
+
+
+// =========================
+// AUTO SLIDER
+// =========================
+
+setInterval(() => {
+
+    nextSlide();
+
+}, 5000);
