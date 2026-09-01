@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Product Details | ShoeSmart</title>
+    <title>{{ $product->name }} | STEPX</title>
 
     <link rel="stylesheet" href="{{ asset('product.css') }}">
 
@@ -15,8 +15,6 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
-
-     <link rel="stylesheet" href="{{ asset('css/product.css') }}">      
 </head>
 
 <body>
@@ -26,7 +24,7 @@
 <header class="navbar">
 
     <div class="logo">
-        <a href="{{ url('/') }}">LOGO</a>
+        <img src="{{ asset('images/logo.png') }}" alt="STEPX Logo">
     </div>
 
     <nav class="main-menu">
@@ -74,8 +72,9 @@
             </button>
 
             <img id="mainProductImage"
-                 src="{{ asset('images/product1.jpg') }}"
-                 alt="Product">
+                 src="{{ $product->image_url }}"
+                 alt="{{ $product->name }}"
+                 onerror="this.src='{{ asset('images/logo.png') }}'">
 
             <button class="image-arrow right-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
@@ -89,18 +88,9 @@
         <div class="thumbnail-container">
 
             <div class="thumbnail active">
-                <img src="{{ asset('images/product1.jpg') }}"
-                     onclick="changeImage(this)">
-            </div>
-
-            <div class="thumbnail">
-                <img src="{{ asset('images/product2.jpg') }}"
-                     onclick="changeImage(this)">
-            </div>
-
-            <div class="thumbnail">
-                <img src="{{ asset('images/product3.jpg') }}"
-                     onclick="changeImage(this)">
+                <img src="{{ $product->image_url }}"
+                     onclick="changeImage(this)"
+                     onerror="this.src='{{ asset('images/logo.png') }}'">
             </div>
 
         </div>
@@ -112,12 +102,12 @@
 
     <section class="product-info">
 
-        <span class="product-category">Product</span>
+        <span class="product-category">{{ $product->category }}</span>
 
-        <h1>STEPX AIR FLEX</h1>
+        <h1>{{ strtoupper($product->name) }}</h1>
 
         <div class="product-price">
-            LKR 12999.99
+            Rs. {{ number_format($product->price, 2) }}
         </div>
 
 
@@ -125,11 +115,11 @@
 
         <div class="rating">
 
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
+            @for ($i = 1; $i <= 5; $i++)
+                <i class="fa-{{ $i <= $product->rating ? 'solid' : 'regular' }} fa-star"></i>
+            @endfor
+
+            <span>({{ $product->reviews }})</span>
 
         </div>
 
@@ -139,30 +129,8 @@
         <div class="description">
 
             <p>
-                About that product; your useful and very important
-                product. Life simply by product you can use for every
-                time. About that product yourself and very important
-                Life simply by product you can use for every times.
+                {{ $product->description ?? 'No description available for this product yet.' }}
             </p>
-
-        </div>
-
-
-        <!-- COLOR -->
-
-        <div class="option-section">
-
-            <label>COLOR</label>
-
-            <div class="color-options">
-
-                <button class="color black active-color"></button>
-                <button class="color red"></button>
-                <button class="color blue"></button>
-                <button class="color green"></button>
-                <button class="color yellow"></button>
-
-            </div>
 
         </div>
 
@@ -216,6 +184,8 @@
 
 <script>
 
+    const productName = @json($product->name);
+
     // Change product image
     function changeImage(image) {
 
@@ -258,7 +228,7 @@
 
         let quantity = document.getElementById("quantity").value;
 
-        alert("Product added to cart! Quantity: " + quantity);
+        alert(productName + " added to cart! Quantity: " + quantity);
     }
 
 
@@ -267,7 +237,7 @@
 
         let quantity = document.getElementById("quantity").value;
 
-        alert("Proceeding to checkout. Quantity: " + quantity);
+        alert("Proceeding to checkout with " + productName + ". Quantity: " + quantity);
     }
 
 </script>
